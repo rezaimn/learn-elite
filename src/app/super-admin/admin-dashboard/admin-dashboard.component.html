@@ -1,0 +1,465 @@
+<div [@routerTransition]>
+    <!--<app-page-header [heading]="'Payments'" [icon]="'fa-table'"></app-page-header>-->
+    <h2 style="margin-top:20px">User Data</h2>
+    <hr>
+    <ng-template #Visitor let-c="close" let-d="dismiss" >
+        <div class="center-box">
+            <div class="modal-header">
+                <h2 class="modal-title" style="margin-left: 20px">Visitors </h2>
+                <button type="button" class="close" aria-label="Close" (click)="c('Close click');">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #visitorForm="ngForm" class="create-box" >
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Visitor Count</label>
+                            <input type="number" name="visitor" #visitorCount [(ngModel)]="visitorModel.visitor" required
+                                   placeholder="Visitor Count.." class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!visitorCount.valid && visitorCount.touched"
+                                  style="color: red">Visitor Count Is required </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">View Count</label>
+                            <input type="number" name="view" [(ngModel)]="visitorModel.view" required #viewCount
+                                   placeholder="View Count.." class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!viewCount.valid && viewCount.touched"
+                                  style="color: red">Visitor Count Is required </span>
+                            <span class="help-block"
+                                  *ngIf="visitorCount>viewCount"
+                                  style="color: red">Visitor Count Must Be <= View Count </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Date</label>
+                            <div class="input-group datepicker-input">
+                                <input class="form-control" placeholder="yyyy-mm-dd"
+                                       name="dp" [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+                                <button class="input-group-addon" (click)="d.toggle()" type="button">
+                                    <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                                    <span class="fa fa-calendar"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="submit-btn" (click)="c('Close click')" style="width: 100px">Cancel</button>
+                <button *ngIf="mode=='add'"  type="button" class="submit-btn" (click)="addUpdateVisitor('add')"  style="width: 100px">Add</button>
+                <button *ngIf="mode=='edit'" type="button" class="submit-btn" (click)="addUpdateVisitor('edit')" style="width: 100px">Edit</button>
+
+            </div>
+
+            <div class="row" style="margin-left: 0px;margin-right: 0px">
+                <div class="col col-xl-12 col-lg-12">
+                    <div class="card mb-3">
+                        <div class="card-body table-responsive">
+                            <table class="table">
+                                <thead style="text-align: center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>View</th>
+                                    <th>Visitor</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                <tr *ngFor="let visitor of allUserVisitors;let i=index">
+                                    <th scope="row">{{((visitorSelectedPage-1)*5)+i+1}}</th>
+                                    <td>{{visitor.date}}</td>
+                                    <td>{{visitor.view}}</td>
+                                    <td>{{visitor.visitor}}</td>
+                                    <td>
+                                        <button class="submit-btn-table" (click)="loadVisitorDataForEdit(visitor)">Edit</button>
+                                    </td>
+                                    <td>
+                                        <button class="submit-btn-table" (click)="selectDeleteTarget(visitor,'visitor');openModal(delete)">Delete</button>
+                                    </td>
+
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="col col-sm-6">
+
+                                <ngb-pagination [collectionSize]="allUserVisitorsOrginal.length"  [(page)]="visitorSelectedPage" size="md" [pageSize]="'5'" (pageChange)="loadPage($event,'visitor')"></ngb-pagination>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </ng-template>
+
+
+    <ng-template #Payments let-c="close" let-d="dismiss" >
+
+        <div class="center-box">
+            <div class="modal-header">
+                <h2 class="modal-title" style="margin-left: 20px">Payments</h2>
+                <button type="button" class="close" aria-label="Close" (click)="c('Close click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #paymentForm="ngForm" class="create-box" >
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Payment</label>
+                            <input type="number" name="paymentA" [(ngModel)]="paymentModel.payment" required #paymentAmount
+                                   placeholder="Payment.." class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!paymentAmount.valid && paymentAmount.touched"
+                                  style="color: red">Payment Amount Is required </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Payment Method</label>
+                            <input name="paymentM" [(ngModel)]="paymentModel.paymentMethod" required #paymentM
+                                   placeholder="Payment Method.." class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!paymentM.valid && paymentM.touched"
+                                  style="color: red">Payment Method Is required </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Date</label>
+                            <div class="input-group datepicker-input">
+                                <input class="form-control" placeholder="yyyy-mm-dd"
+                                       name="dp" [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+                                <button class="input-group-addon" (click)="d.toggle()" type="button">
+                                    <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                                    <span class="fa fa-calendar"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="submit-btn" (click)="c('Close click')" style="width: 100px">Cancel</button>
+                <button *ngIf="mode=='add'"  type="button" class="submit-btn" (click)="addUpdatePayment('add')"  style="width: 100px">Add</button>
+                <button *ngIf="mode=='edit'" type="button" class="submit-btn" (click)="addUpdatePayment('edit')" style="width: 100px">Edit</button>
+
+            </div>
+            <div class="row" style="margin-left: 0px;margin-right: 0px">
+                <div class="col col-xl-12 col-lg-12">
+                    <div class="card mb-3">
+                        <div class="card-body table-responsive">
+                            <table class="table">
+                                <thead style="text-align: center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Payment</th>
+                                    <th>Payment Method</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                <tr *ngFor="let payment of allUserPayments;let i=index">
+                                    <th scope="row">{{((paymentSelectedPage-1)*5)+i+1}}</th>
+                                    <td>{{payment.date}}</td>
+                                    <td>${{payment.payment}}</td>
+                                    <td>{{payment.paymentMethod}}</td>
+                                    <td>
+                                        <button  class="submit-btn-table" (click)="loadPaymentDataForEdit(payment);">Edit</button>
+                                    </td>
+                                    <td>
+                                        <button  class="submit-btn-table" (click)="selectDeleteTarget(payment,'payment');openModal(delete)">Delete</button>
+                                    </td>
+
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="col col-sm-6">
+
+                                <ngb-pagination [collectionSize]="allUserPaymentsOrginal.length" [(page)]="paymentSelectedPage" size="md"  [pageSize]="'5'" (pageChange)="loadPage($event,'payment')"></ngb-pagination>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </ng-template>
+
+
+    <ng-template #Sales let-c="close" let-d="dismiss" >
+
+        <div class="center-box">
+            <div class="modal-header">
+                <h2 class="modal-title" style="margin-left: 20px">Sales</h2>
+                <button type="button" class="close" aria-label="Close" (click)="c('Close click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #salesForm="ngForm" class="create-box" >
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Sale Amount</label>
+                            <input type="number" name="salesA" [(ngModel)]="saleModel.sale_Amount" required #saleAmount
+                                   placeholder="Sale Amount.." class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!saleAmount.valid && saleAmount.touched"
+                                  style="color: red">Sale Amount Is required </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Sale Quantity</label>
+                            <input type="number" name="salesQ" [(ngModel)]="saleModel.sale_Quantity" required #saleQ
+                                   placeholder="Sale Quantity.." class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!saleQ.valid && saleQ.touched"
+                                  style="color: red">Sale Quantity Is required </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Date</label>
+                            <div class="input-group datepicker-input">
+                                <input class="form-control" placeholder="yyyy-mm-dd"
+                                       name="dp" [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+                                <button class="input-group-addon" (click)="d.toggle()" type="button">
+                                    <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                                    <span class="fa fa-calendar"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="submit-btn" (click)="c('Close click')" style="width: 100px">Cancel</button>
+                <button *ngIf="mode=='add'"  type="button" class="submit-btn" (click)="addUpdateSale('add')"  style="width: 100px">Add</button>
+                <button *ngIf="mode=='edit'" type="button" class="submit-btn" (click)="addUpdateSale('edit')" style="width: 100px">Edit</button>
+
+            </div>
+            <div class="row" style="margin-left: 0px;margin-right: 0px">
+                <div class="col col-xl-12 col-lg-12">
+                    <div class="card mb-3">
+                        <div class="card-body table-responsive">
+                            <table class="table">
+                                <thead style="text-align: center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Sale Amount</th>
+                                    <th>Sale Quantity</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                <tr *ngFor="let sale of allUserSales;let i=index">
+                                    <th scope="row">{{((saleSelectedPage-1)*5)+i+1}}</th>
+                                    <td>{{sale.date}}</td>
+                                    <td>{{sale.sale_Amount}}</td>
+                                    <td>{{sale.sale_Quantity}}</td>
+                                    <td>
+                                        <button  class="submit-btn-table" (click)="loadSaleDataForEdit(sale);">Edit</button>
+                                    </td>
+                                    <td>
+                                        <button class="submit-btn-table" (click)="selectDeleteTarget(sale,'sale');openModal(delete)">Delete</button>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="col col-sm-6">
+
+                                <ngb-pagination [collectionSize]="allUserSalesOrginal.length" [(page)]="saleSelectedPage" size="md"  [pageSize]="'5'" (pageChange)="loadPage($event,'sale')"></ngb-pagination>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </ng-template>
+
+
+
+    <ng-template #Country let-c="close" let-d="dismiss" >
+
+        <div class="center-box">
+            <div class="modal-header">
+                <h2 class="modal-title" style="margin-left: 20px">Countries</h2>
+                <button type="button" class="close" aria-label="Close" (click)="c('Close click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #countryForm="ngForm" class="create-box" >
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Country</label>
+                            <input name="Country" [(ngModel)]="countryModel.country" required #countryN
+                                   placeholder="Country.." class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!countryN.valid && countryN.touched"
+                                  style="color: red">Country Name Is required </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Visit Amount</label>
+                            <input type="number" name="VAmount" [(ngModel)]="countryModel.visit" required #countryVisit
+                                   placeholder="Visit Amount.." class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!countryVisit.valid && countryVisit.touched"
+                                  style="color: red">Visit Amount Is required </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Month/Year</label>
+                            <input name="monthYear" [(ngModel)]="countryDate" type="month"  class="form-control form-input" style="height: 40px">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="submit-btn" (click)="c('Close click')" style="width: 100px">Cancel</button>
+                <button *ngIf="mode=='add'"  type="button" class="submit-btn" (click)="addUpdateCountry('add')"  style="width: 100px">Add</button>
+                <button *ngIf="mode=='edit'" type="button" class="submit-btn" (click)="addUpdateCountry('edit')" style="width: 100px">Edit</button>
+
+            </div>
+
+            <div class="row" style="margin-left: 0px;margin-right: 0px">
+                <div class="col col-xl-12 col-lg-12">
+                    <div class="card mb-3">
+                        <div class="card-body table-responsive">
+                            <table class="table">
+                                <thead style="text-align: center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Country</th>
+                                    <th>Visit Amount</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                <tr *ngFor="let country of allUserCountryVisits;let i=index">
+                                    <th scope="row">{{((countrySelectedPage-1)*5)+i+1}}</th>
+                                    <td>{{country.date| slice :0:7}}</td>
+                                    <td>{{country.country}}</td>
+                                    <td>{{country.visit}}</td>
+                                    <td>
+                                        <button  class="submit-btn-table" (click)="loadCountryDataForEdit(country);">Edit</button>
+                                    </td>
+                                    <td>
+                                        <button  class="submit-btn-table" (click)="selectDeleteTarget(country,'country');openModal(delete)">Delete</button>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="col col-sm-6">
+
+                                <ngb-pagination [collectionSize]="allUserCountryVisitsOrginal.length" [(page)]="countrySelectedPage" size="md"  [pageSize]="'5'" (pageChange)="loadPage($event,'country')"></ngb-pagination>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </ng-template>
+
+    <ng-template #delete let-c="close" let-d="dismiss" style="width: 60%;margin-top: 20%" >
+
+        <div class="center-box">
+            <div class="modal-header">
+                <h2 class="modal-title" style="margin-left: 20px">Delete</h2>
+                <button type="button" class="close" aria-label="Close" (click)="c('Close click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <h3>Are You Sure To Delete?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="c('Close click')" style="width: 100px">No</button>
+                <button   type="button" class="btn btn-success" (click)="confirmDelete();c('Close click')"  style="width: 100px">Yes</button>
+
+            </div>
+        </div>
+    </ng-template>
+
+
+    <div class="row">
+        <div class="col col-xl-12 col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    User Data Management
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table">
+                        <thead style="text-align: center">
+                        <tr>
+                            <th>#</th>
+                            <th>User Name</th>
+                            <th>Visitors</th>
+                            <th>Payments</th>
+                            <th>Sales</th>
+                            <th>Visits Per Country</th>
+                        </tr>
+                        </thead>
+                        <tbody style="text-align: center;">
+                        <tr *ngFor="let user of allUsers;let i=index">
+                            <th scope="row">{{((userSelectedPage-1)*5)+i+1}}</th>
+                            <td>{{user.first_name+'  '}}{{user.last_name}}</td>
+                            <td>
+                                <button  class="submit-btn-table" (click)="open(Visitor);getAllSelectedUserVisitors(user.user_id)">Visitors</button>
+
+                            </td>
+                            <td>
+                                <button  class="submit-btn-table" (click)="open(Payments);getAllSelectedUserPayments(user.user_id)">Payments</button>
+
+                            </td>
+                            <td>
+                                <button  class="submit-btn-table" (click)="open(Sales);getAllSelectedUserSales(user.user_id)">Sales</button>
+                            </td>
+                            <td>
+                                <button  class="submit-btn-table" (click)="open(Country);getAllSelectedUserCountryVisits(user.user_id)">Country Visits</button>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div class="col col-sm-6">
+
+                        <ngb-pagination [collectionSize]="allUsersOrginal.length" [(page)]="userSelectedPage" size="md"  [pageSize]="'5'" (pageChange)="loadPage($event,'user')"></ngb-pagination>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

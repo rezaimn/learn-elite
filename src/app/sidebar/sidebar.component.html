@@ -1,0 +1,107 @@
+<nav class="sidebar" [style.display]="hideLandingSidebar?'none':'block'"
+     [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+    <div class="list-group">
+
+        <a
+            class="list-group-item"
+            *ngIf="userIsLoggedIn ">
+            <li class="fa fa-fw fa-user"> </li>
+        <span style="font-family: IRANSans!important;">
+        Hi{{' '+loggedInUser.name}}
+        </span>
+
+        </a>
+
+        <a *ngIf="isAdmin" [routerLink]="['/admin/dashboard']" [routerLinkActive]="['router-link-active']"
+           class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span style="font-family: IRANSans!important;">User Data</span>
+        </a>
+        <a *ngIf="isManager" [routerLink]="['/manage/dashboard']" [routerLinkActive]="['router-link-active']"
+           class="list-group-item">
+            <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
+            <span style="font-family: IRANSans!important;">Dashboard</span>
+        </a>
+        <a *ngIf="urlContainsManage()" [routerLink]="['/manage/profile']" [routerLinkActive]="['router-link-active']"
+           class="list-group-item">
+            <i class="fa fa-fw fa-user-o"></i>&nbsp;
+            <span style="font-family: IRANSans!important;">User Profile</span>
+        </a>
+        <a *ngIf="urlContainsManage()" [routerLink]="['/manage/payments']" [routerLinkActive]="['router-link-active']"
+           class="list-group-item">
+            <i class="fa fa-fw fa-money"></i>&nbsp;
+            <span style="font-family: IRANSans!important;">Payments</span>
+        </a>
+        <a *ngIf="urlContainsManage()" [routerLink]="['/manage/tasks']" [routerLinkActive]="['router-link-active']"
+           class="list-group-item">
+            <i class="fa fa-fw fa-tasks"></i>&nbsp;
+            <span style="font-family: IRANSans!important;">Taskes</span>
+        </a>
+
+        <!--<a-->
+        <!--[routerLink]="['/manage/dashboard']"-->
+        <!--[routerLinkActive]="['router-link-active']"-->
+        <!--class="list-group-item"-->
+        <!--*ngIf="isManager" >-->
+        <!--<li class="fa fa-fw fa-bar-chart-oe">-->
+        <!--<span style="font-family: IRANSans!important;">-->
+        <!--Dashboard-->
+        <!--</span>-->
+        <!--</li>-->
+        <!--</a>-->
+        <!--<a-->
+        <!--[routerLink]="['/admin/dashboard']"-->
+        <!--[routerLinkActive]="['router-link-active']"-->
+        <!--class="list-group-item"-->
+        <!--*ngIf="isAdmin" >-->
+        <!--<li class="fa fa-fw fa-bar-chart-oe">-->
+        <!--<span style="font-family: IRANSans!important;">-->
+        <!--Dashboard-->
+        <!--</span>-->
+        <!--</li>-->
+        <!--</a>-->
+        <a [routerLink]="['/home']"
+           [routerLinkActive]="['router-link-active']"
+           class="list-group-item"
+           *ngIf="!urlContainsNothing() && isToggled()">
+            <li class="fa fa-fw fa-home">  </li>
+                 <span style="font-family: IRANSans!important;">
+                Home
+                 </span>
+
+        </a>
+        <a [routerLink]="['/home/login']"
+           [routerLinkActive]="['router-link-active']"
+           class="list-group-item"
+           *ngIf="!userIsLoggedIn && !urlContainsManage() && !urlContainsAdmin()">
+            <li class="fa fa-fw fa-sign-in"> </li>
+                <span style="font-family: IRANSans!important;">
+                     Sign In
+                </span>
+
+        </a>
+        <a
+            [routerLink]="['/home/signup']"
+            [routerLinkActive]="['router-link-active']"
+            class="list-group-item"
+            *ngIf="!userIsLoggedIn && !urlContainsManage() && !urlContainsAdmin()">
+            <li class="fa fa-fw fa-user-plus"> </li>
+                <span style="font-family: IRANSans!important;">
+                      Create New Account
+                </span>
+
+        </a>
+
+        <a (click)="onLoggedout()"
+           [routerLink]="['/home/login']"
+           [routerLinkActive]="['router-link-active']"
+           class="list-group-item"
+           *ngIf="userIsLoggedIn ">
+            <li class="fa fa-fw fa-sign-out">  </li>
+                <span style="font-family: IRANSans!important;">
+                      Logout
+                </span>
+
+        </a>
+    </div>
+</nav>

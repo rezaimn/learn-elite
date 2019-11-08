@@ -1,0 +1,43 @@
+<particles [style]="myStyle" [width]="width" [height]="height" [params]="myParams"></particles>
+
+    <div class="charts" style="position: absolute; width: 100%; top: 0;
+    bottom: 0;background-image: url(../../../assets/images/checkered-pattern.png);">
+        <div class="contact-us login-page" >
+            <h2 >Sign In</h2>
+            <label style="font-size: 14px;margin-bottom: 0px">Please enter your Username and Password.</label>
+            <hr>
+            <form #loginForm="ngForm" >
+                <fieldset class="form-group">
+                    <input class="form-control" #userName="ngModel"  required name="username"  [(ngModel)]="loginObject.username" placeholder="User Name" style="height: 40px">
+                    <span class="help-block"
+                          *ngIf="!userName.valid && userName.touched"
+                          style="color: red">Username Is required </span>
+                </fieldset>
+                <fieldset class="form-group">
+                    <input type="password" class="form-control" #password="ngModel" required  name="pass"  [(ngModel)]="loginObject.password" placeholder="Password"style="height: 40px">
+                    <span class="help-block"
+                          *ngIf="!password.valid && password.touched"
+                          style="color: red">Password Is required </span>
+                </fieldset>
+                <div class="form-check" style="margin-bottom: 20px">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="" style="width: 15px;height: 15px">Remember me
+                    </label>
+                </div>
+                <hr>
+                <div class="more-information">
+                    <label style="font-size: 14px">
+                    <span style="color: #aaa">By clicking Sign In, you agree to our<a style="color: #239bcc;cursor: pointer">Terms of Use</a> and our <a style="color: #239bcc;cursor: pointer">Privacy
+                        Policy</a>.
+                    </span>
+                </label></div>
+
+                <button class="submit-btn"
+                        [disabled]="!loginForm.valid"
+                        style="marginn-top: 20px;margin-bottom: 10px"
+                (click)="onLoggedin()">Login</button>
+                <a [routerLink]="'/reset-password'" style="text-align: center">Forget Password?</a>
+            </form>
+        </div>
+    </div>
+

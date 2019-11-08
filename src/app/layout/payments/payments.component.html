@@ -1,0 +1,57 @@
+<div [@routerTransition]>
+    <!--<app-page-header [heading]="'Payments'" [icon]="'fa-table'"></app-page-header>-->
+    <h2 style="margin-top:20px">Payments</h2>
+    <hr>
+    <div class="row">
+        <div class="col col-xl-12 col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            Payments Information
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <select name="selectedYear" class="form-control" style="max-width: 200px;float: right"
+                                        [(ngModel)]="selectedYear"
+                                        (ngModelChange)="getAllPayments()">
+
+                                    <option *ngFor="let year of years" [ngValue]="year" >{{year}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table">
+                        <thead style="text-align: center">
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Payment Method</th>
+                        </tr>
+                        </thead>
+                        <tbody style="text-align: center;">
+                        <tr *ngFor="let payment of userPaymentList;let i=index">
+                            <th scope="row">{{((paymentSelectedPage-1)*5)+i+1}}</th>
+                            <td>{{payment.date}}</td>
+                            <td>${{payment.payment}}</td>
+                            <td>{{payment.paymentMethod}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div class="col col-sm-6">
+                        <ngb-pagination [collectionSize]="allUserPaymentsOrginal.length" [(page)]="paymentSelectedPage" size="md"  [pageSize]="'5'" (pageChange)="loadPage($event,'payment')"></ngb-pagination>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

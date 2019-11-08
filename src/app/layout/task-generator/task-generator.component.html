@@ -1,0 +1,139 @@
+<div [@routerTransition]>
+    <!--<app-page-header [heading]="'Payments'" [icon]="'fa-table'"></app-page-header>-->
+
+    <h2 style="margin-top:20px">Tasks</h2>
+    <hr>
+    <div class="row">
+        <button class="submit-btn" (click)="open(content)" style="width: 150px;
+    float: right;
+    margin-bottom: 20px;
+    margin-left: 20px;">Add New Task
+        </button>
+
+    </div>
+    <ng-template #content let-c="close" let-d="dismiss">
+
+        <div class="center-box">
+            <div class="modal-header">
+                <h4 class="modal-title">Add/Edit Task</h4>
+                <button type="button" class="close" aria-label="Close" (click)="c('Close click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #taskForm="ngForm" class="create-box" style="padding-left: 5%;padding-right: 5%">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label class="control-label">Title</label>
+                            <input name="title" [(ngModel)]="taskModel.taskTitle" required #title
+                                   placeholder="Task Title.."
+                                   class="form-control form-input" style="height: 40px">
+                            <span class="help-block"
+                                  *ngIf="!title.valid && title.touched"
+                                  style="color: red">Task Title Is required </span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <label class="control-label">Date</label>
+                            <div class="input-group datepicker-input">
+                                <input class="form-control" placeholder="yyyy-mm-dd"
+                                       name="dp" [(ngModel)]="selectedDate" ngbDatepicker #d="ngbDatepicker">
+                                <button class="input-group-addon" (click)="d.toggle()" type="button">
+                                    <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                                    <span class="fa fa-calendar"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <input name="flag" [(ngModel)]="taskModel.flag" type="checkbox"
+                                   style="height: 20px;width: 20px">
+                            <label style="margin-left: 10px" class="control-label">Is Done</label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="submit-btn" (click)="c('Close click')" style="width: 100px">Cancel</button>
+                <button *ngIf="mode=='add'" type="button" class="submit-btn" (click)="addUpdateTask('add');c('Close click')"
+                        style="width: 100px">Add
+                </button>
+                <button *ngIf="mode=='edit'" type="button" class="submit-btn" (click)="addUpdateTask('edit');c('Close click')"
+                        style="width: 100px">Edit
+                </button>
+
+            </div>
+        </div>
+    </ng-template>
+
+    <div class="row">
+        <div class="col col-xl-12 col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Tasks Information
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table">
+                        <thead style="text-align: center">
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody style="text-align: center;">
+                        <tr *ngFor="let task of userTaskList;let i=index">
+                            <th scope="row">{{((userSelectedPage-1)*5)+i+1}}</th>
+                            <td>{{task.taskTitle}}</td>
+                            <td>{{task.date}}</td>
+                            <td><input type="checkbox" disabled [(ngModel)]="task.flag" style="width: 20px;height: 20px"></td>
+                            <td>
+                                <button style="height: 30px;width: 100px" class="submit-btn"
+                                        (click)="loadDataForEdit(task);open(content)">Edit
+                                </button>
+                            </td>
+                            <td>
+                                <button style="height: 30px;width: 100px" class="submit-btn" (click)="openModal(delete);selectTaskToDelete(task)">
+                                    Delete
+                                </button>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div class="col col-sm-6">
+
+                        <ngb-pagination [collectionSize]="userTaskListOriginal.length" [(page)]="userSelectedPage"
+                                        size="md" [pageSize]="'5'" (pageChange)="loadPage($event)"></ngb-pagination>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<ng-template #delete let-c="close" let-d="dismiss" style="width: 60%;margin-top: 20%" >
+
+    <div class="center-box">
+        <div class="modal-header">
+            <h2 class="modal-title" style="margin-left: 20px">Delete</h2>
+            <button type="button" class="close" aria-label="Close" (click)="c('Close click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h3>Are You Sure To Delete?</h3>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="c('Close click')" style="width: 100px">No</button>
+            <button   type="button" class="btn btn-success" (click)="deleteTask();c('Close click')"  style="width: 100px">Yes</button>
+
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,16 @@
+@import "../../common";
+.members-img{
+    height: 120px;
+    display: flex;
+    margin: -70px auto auto;
+    border-radius: 100px;
+    box-shadow: 0px 0px 22px 0px #0b2e39;
+}
+.team-name{
+    border: solid 2px #FFD161;
+    background: #0b2e39;
+    margin-right: 20px;
+    margin-left: 20px;
+    color: #FFD161;
+    padding:2px;
+}

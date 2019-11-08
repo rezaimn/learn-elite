@@ -1,0 +1,44 @@
+$topnav-background-color: #222;
+:host {
+    .navbar {
+        background: linear-gradient(to right, #002531 17%, #eec45bc7 100%);
+        background-image: linear-gradient(to right, rgb(0, 37, 49) 17%, rgba(238, 196, 91, 0.78) 100%);
+        .navbar-brand {
+            color: #fff;
+        }
+        .nav-item > a {
+            color: #999;
+            &:hover {
+                color: #fff;
+            }
+        }
+    }
+    .messages {
+        width: 300px;
+        .media {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 10px;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        .media-body {
+            h5 {
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .small {
+                margin: 0;
+            }
+            .last {
+                font-size: 12px;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.menu-bar-icon {
+    color: #e9ecefbd !important;
+    font-size: 32px;
+}

@@ -1,0 +1,75 @@
+<particles [style]="myStyle" [width]="width" [height]="height" [params]="myParams"></particles>
+
+
+<div class="charts" style="position: absolute;width: 100%;    top: 0;
+    bottom: 0;background-image: url(../../../assets/images/checkered-pattern.png);">
+    <div class="video-style signup-page">
+        <form #signUpForm="ngForm" class="create-box" style="padding-left: 10%;padding-right: 10%">
+            <div class="center-box">
+                <p class="h4" style="text-align: center">Create Account</p>
+                <p class="second-txt" >Let's quickly gather some brief information and you'll be on your way to gain
+                    access to a
+                    robust platform!</p>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label"><strong style="color: #da1010">* </strong>First Name</label>
+                        <input name="fName" #firstName="ngModel" required [(ngModel)]="signUpModel.firstname" placeholder="Enter First Name Here.." class="form-control form-input">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label"><strong style="color: #da1010">* </strong>Last Name</label>
+                        <input name="lName"  #lastName="ngModel" required  [(ngModel)]="signUpModel.lastname" placeholder="Enter Last Name Here.." type="text" class="form-control form-input">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label"><strong style="color: #da1010">* </strong>Email</label>
+                        <input name="email"
+                               #email="ngModel" required [(ngModel)]="signUpModel.email"
+                               placeholder="Enter Email Address Here.."
+                               type="email" class="form-control form-input"
+                               pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$">
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label"><strong style="color: #da1010">* </strong>Username</label>
+                        <input name="userName"  #userName="ngModel" required [(ngModel)]="signUpModel.username" placeholder="Username" type="text" class="form-control form-input">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label"><strong style="color: #da1010">* </strong>Password</label>
+                        <input name="pass" #Password="ngModel"
+                               required [(ngModel)]="signUpModel.password"
+                               placeholder="Enter Password Here.."
+                               type="password"
+                               class="form-control form-input">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label">Confirm Password</label>
+                        <input name="cPass" ngModel
+                               [equalTo]="Password"
+                               #ConfirmPassword="ngModel"
+                               [(ngModel)]="signUpModel.confirmPass"
+                               placeholder="Enter Confirmation Password Here.."
+                               type="password" class="form-control form-input">
+                        <span class="help-block"
+                              *ngIf="!ConfirmPassword.valid && ConfirmPassword.touched"
+                              style="color: red">Password is not match</span>
+                    </div>
+                </div>
+                <button  class="submit-btn" [disabled]="!signUpForm.valid" [class.disabled-button]="!signUpForm.valid" (click)="signUp()" style="width: 200px;">Create Account</button>
+                <div class="more-information" style="margin-top: 10px;">
+                    <label>
+                        <small>By clicking Sign In, you agree to our
+                            <a href="https://app.termly.io/document/terms-of-use-for-website/bec9c303-4156-4a2b-902f-9e741e1bb2b1">Terms
+                                of Use</a>
+                            and our
+                            <a href="https://app.termly.io/document/privacy-policy/d35bc41a-dd75-4912-ae51-9d7deea90433">Privacy
+                                Policy</a>.
+                        </small>
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

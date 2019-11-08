@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg fixed-top" style="opacity: 0.9;padding-left: 0px!important;">
+    <img [routerLink]="['/home']" style="cursor: pointer" src="../../assets/images/logo-learn.png" height="90"/>
+    <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
+        <span class="navbar-toggler-icon"></span>
+        <i class="fa fa-bars menu-bar-icon" aria-hidden="true"></i>
+    </button>
+    <div class="collapse navbar-collapse">
+        <!--<profile class="profile-inline my-2 my-lg-0">-->
+        <!--<input class="profile-control mr-sm-2" type="text" placeholder="{{ 'Search' | translate }}" >-->
+        <!--</profile>-->
+        <ul class="navbar-nav ml-auto">
+
+
+            <li class="nav-item" *ngIf="userIsLoggedIn && !urlContainsManage()&& isManager">
+                <a href="javascript:void(0)" class="nav-link mt-1"
+                   style="padding: 0.375rem 1rem !important; border-color: #999;color: #fff;font-size: 18px;" [routerLink]="['/manage/dashboard']"
+
+                >
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="userIsLoggedIn && !urlContainsAdmin()&& isAdmin">
+                <a href="javascript:void(0)" class="nav-link mt-1"
+                   style="padding: 0.375rem 1rem !important; border-color: #999;color: #fff;font-size: 18px;" [routerLink]="['/admin/dashboard']"
+
+                >
+                    User Data
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="!urlContainsNothing()">
+                <a href="javascript:void(0)" class="nav-link mt-1"
+                   style="padding: 0.375rem 1rem !important; border-color: #999;color: #fff;font-size: 18px;" [routerLink]="['/home']"
+
+                >
+                    Home
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="!userIsLoggedIn && !urlContainsManage()">
+                <a href="javascript:void(0)" class="nav-link mt-1"
+                   style="padding: 0.375rem 1rem !important; border-color: #999;color: #fff;font-size: 18px;"  [routerLink]="['/home/login']"
+
+                >
+                    Sign In
+                </a>
+            </li> &nbsp;
+            &nbsp;
+            <li class="nav-item" *ngIf="!userIsLoggedIn && !urlContainsManage()">
+                <a href="javascript:void(0)" class="nav-link mt-1"
+                   style="padding: 0.375rem 1rem !important; border-color: #999;color: #fff;font-size: 19px;font-weight: bold;" [routerLink]="['/home/signup']"
+                >
+                    Create New Account
+                </a>
+            </li>
+          &nbsp;
+            <li (click)="onLoggedout()"
+                class="nav-item" *ngIf="userIsLoggedIn">
+                <a href="javascript:void(0)" class="nav-link mt-1"
+                   style="padding: 0.375rem 1rem !important; border-color: #999;color: #fff;font-size: 18px;"  [routerLink]="['/home/login']"
+                >
+                    Logout
+                </a>
+            </li> &nbsp;
+        </ul>
+    </div>
+</nav>

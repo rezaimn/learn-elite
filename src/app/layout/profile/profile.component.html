@@ -1,0 +1,71 @@
+<div [@routerTransition]>
+    <!--<app-page-header [heading]="'User Profile'" [icon]="'fa-edit'"></app-page-header>-->
+    <h2 style="margin-top:20px">User Profile</h2>
+    <hr>
+    <div class="row">
+        <div class="col col-xl-12 col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Edit Profile
+                </div>
+
+                <div class="card-body table-responsive">
+                    <form #profileFoorm="ngForm" class="create-box">
+                        <div class="center-box" style="margin: 20px">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <label class="control-label">First Name</label>
+                                    <input disabled name="fName" [(ngModel)]="profileModel.firstname" placeholder="First Name.." class="form-control form-input">
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <label class="control-label">Last Name</label>
+                                    <input disabled name="lName" [(ngModel)]="profileModel.lastname" placeholder="Last Name.." type="text" class="form-control form-input">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <label class="control-label">Email</label>
+                                    <input name="email" disabled [(ngModel)]="profileModel.email" placeholder="Email.." type="email" class="form-control form-input">
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <label class="control-label">Username</label>
+                                    <input name="userName" disabled [(ngModel)]="profileModel.username" placeholder="Username.." type="text" class="form-control form-input">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label">Country</label>
+                                    <input name="country" [(ngModel)]="profileModel.country" placeholder="Country.." type="email" class="form-control form-input">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label">City</label>
+                                    <input name="city" [(ngModel)]="profileModel.city" placeholder="City.." type="text" class="form-control form-input">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label">Zip Code</label>
+                                    <input name="zCode" [(ngModel)]="profileModel.zipcode" placeholder="Zip Code.." type="number" class="form-control form-input">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label class="control-label">Address</label>
+                                    <textarea name="address" [(ngModel)]="profileModel.address"  placeholder="Address.." type="password"
+                                              class="form-control form-input"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label class="control-label">Paypal ID</label>
+                                    <input name="paypal" [(ngModel)]="profileModel.paypal_id" placeholder="Paypal ID.." type="number" class="form-control form-input">
+                                </div>
+                            </div>
+                            <button type="button" class="submit-btn" style="width: 200px;" (click)="updateUserInfo()">Update Account</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>

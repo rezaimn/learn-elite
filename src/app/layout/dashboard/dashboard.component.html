@@ -1,0 +1,283 @@
+<div [@routerTransition]>
+    <!--<app-page-header [heading]="'Dashboard'" [icon]="'fa-dashboard'"></app-page-header>-->
+    <h2 style="margin-top:20px">Dashboard</h2>
+    <hr>
+    <form>
+        <div class="row" style="max-width: 400px;margin: auto;display: flex">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <select name="selectedYear" class="form-control"
+                            [(ngModel)]="selectedYear"
+                            (ngModelChange)="updateCharts()">
+
+                        <option *ngFor="let year of years" [ngValue]="year">{{year}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <select name="selectedMonth" class="form-control"
+                            [(ngModel)]="selectedMonth"
+                            (ngModelChange)="updateCharts()">
+                        <option value="" selected>All Months</option>
+                        <option *ngFor="let month of months" [ngValue]="month">{{month}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col col-lg-6 col-md-6 col-sm-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    View Per Country
+                </div>
+                <div class="card-body">
+                    <canvas #countryPie baseChart [colors]="colors" [data]="pieChartCountryData"
+                            [labels]="pieChartCountryLabels" [chartType]="pieChartType"
+                            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-6 col-md-6 col-sm-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Visitor & View
+                </div>
+                <div class="card-body">
+                    <canvas baseChart [colors]="colors" [data]="pieChartVisitorData" [labels]="pieChartVisitorLabels"
+                            [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-12 col-md-12 col-sm-12">
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    Visitor/View
+                </div>
+                <div class="card-body">
+                    <canvas height="100"
+                            [colors]="chartColors"
+                            baseChart
+                            [datasets]="barChartVisitorData"
+                            [labels]="barChartLabels"
+                            [options]="barChartOptions"
+                            [legend]="barChartLegend"
+                            [chartType]="barChartType"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-12 col-md-12 col-sm-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Payments
+                </div>
+                <div class="card-body">
+                    <canvas height="100" [colors]="paymentsColor" baseChart [datasets]="barChartPaymentsData"
+                            [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                            [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-12 col-md-12 col-sm-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Sales Quantity
+                </div>
+                <div class="card-body">
+                    <canvas height="100" [colors]="salesQuantityColor" baseChart [datasets]="barChartSalesQuantityData"
+                            [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                            [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+
+            </div>
+        </div>
+        <div class="col col-lg-12 col-md-12 col-sm-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Sales Amount
+                </div>
+                <div class="card-body">
+                    <canvas height="100" baseChart [colors]="salesAmountColor" [datasets]="barChartSalesAmountData"
+                            [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
+                            [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--<div class="row">-->
+    <!--<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-bottom: 30px">-->
+    <!--<div class="card">-->
+    <!--<div class="card-header no-shadow">-->
+    <!--<div class="card-header-text">-->
+    <!--<div class="card-title" style="font-size: 22px;margin-bottom: 0px">-->
+    <!--Sales Events-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="mb-1">-->
+    <!--<ngx-charts-pie-chart-->
+    <!--class="chart-container"-->
+    <!--[scheme]="colorSchemeSearchStatus"-->
+    <!--[results]="pieChart"-->
+    <!--[animations]="true"-->
+    <!--[legend]="showLegend"-->
+    <!--[legendTitle]="'Legend'"-->
+    <!--[explodeSlices]="explodeSlices"-->
+    <!--[labels]="showLabels"-->
+    <!--[doughnut]="false"-->
+    <!--[arcWidth]="arcWidth"-->
+    <!--(legendLabelClick)="onLegendLabelClick($event)"-->
+    <!--[gradient]="gradient"-->
+    <!--[tooltipDisabled]="tooltipDisabled"-->
+    <!--(dblclick)="dblclick($event)"-->
+    <!--(select)="select($event)">-->
+    <!--</ngx-charts-pie-chart>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style="margin-bottom: 30px">-->
+    <!--<div class="card">-->
+    <!--<div class="card-header no-shadow">-->
+    <!--<div class="card-header-text ">-->
+    <!--<div class="card-title" style="font-size: 22px;margin-bottom: 0px">-->
+    <!--Sales Events-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="mb-1">-->
+    <!--<ngx-charts-bar-vertical-->
+    <!--class="chart-container"-->
+    <!--[view]=[1200,300]-->
+    <!--[scheme]="colorSchemeSearchStatus"-->
+    <!--[schemeType]="schemeType"-->
+    <!--[customColors]="customColors"-->
+    <!--[results]="barChart"-->
+    <!--[animations]="true"-->
+    <!--[gradient]="gradient"-->
+    <!--[xAxis]="showXAxis"-->
+    <!--[yAxis]="showYAxis"-->
+    <!--[legend]="showLegend"-->
+    <!--[legendTitle]="legendTitle"-->
+    <!--[showXAxisLabel]="showXAxisLabel"-->
+    <!--[showYAxisLabel]="showYAxisLabel"-->
+    <!--[tooltipDisabled]="tooltipDisabled"-->
+    <!--[xAxisLabel]="xAxisLabel"-->
+    <!--[yAxisLabel]="yAxisLabel"-->
+    <!--[showGridLines]="showGridLines"-->
+    <!--[barPadding]="8"-->
+    <!--[roundDomains]="roundDomains"-->
+    <!--[roundEdges]="true"-->
+    <!--[yScaleMax]="yScaleMax"-->
+    <!--[showDataLabel]="true"-->
+    <!--(select)="select($event)"-->
+    <!--(legendLabelClick)="onLegendLabelClick($event)">-->
+    <!--</ngx-charts-bar-vertical>-->
+
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+
+    <!--</div>-->
+
+    <div class="row" style="margin-bottom: 80px">
+        <div class="col col-xl-12 col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            Tasks List
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group" style=" max-width: 200px; margin-bottom: 0px;float: right;">
+                                <div class="input-group datepicker-input">
+                                    <input class="form-control" placeholder="yyyy-mm-dd"
+                                           (ngModelChange)="setDate(d)"
+                                           name="dp" [(ngModel)]="filterDate" ngbDatepicker #d="ngbDatepicker">
+                                    <button class="input-group-addon" (click)="d.toggle()" type="button">
+                                        <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                                        <span class="fa fa-calendar"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table">
+                        <thead style="text-align: center">
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody style="text-align: center;">
+                        <tr *ngFor="let task of userTaskList;let i=index">
+                            <th scope="row">{{((userSelectedPage-1)*5)+i+1}}</th>
+                            <td>{{task.taskTitle}}</td>
+                            <td>{{task.date}}</td>
+                            <td><input type="checkbox"  [(ngModel)]="task.flag" (ngModelChange)="ChangeTaskStatus(task)" style="width: 20px;height: 20px"></td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div class="col col-sm-6">
+
+                        <ngb-pagination [collectionSize]="userTaskListOriginal.length" [(page)]="userSelectedPage"
+                                        size="md" [pageSize]="'5'" (pageChange)="loadPage($event)"></ngb-pagination>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!--<ngx-charts-area-chart-stacked (legendlabelclick)="onLegendLabelClick($event)"-->
+<!--(select)="select($event)"-->
+<!--[curve]="curve"-->
+<!--[gradient]="gradient"-->
+<!--[legend]="showLegend"-->
+<!--[results]="areaChart"-->
+<!--[roundDomains]="roundDomains"-->
+<!--[scheme]="colorSchemeSearchStatus"-->
+<!--[schemeType]="schemeType"-->
+<!--[showGridLines]="showGridLines"-->
+<!--[showXAxisLabel]="showXAxisLabel"-->
+<!--[showYAxisLabel]="showYAxisLabel"-->
+<!--[timeline]="timeline"-->
+<!--[tooltipDisabled]="tooltipDisabled"-->
+<!--[xAxis]="showXAxis"-->
+<!--[xAxisLabel]="xAxisLabel"-->
+<!--[yAxis]="showYAxis"-->
+<!--[yAxisLabel]="yAxisLabel"-->
+<!--class="line-container">-->
+<!--</ngx-charts-area-chart-stacked>-->

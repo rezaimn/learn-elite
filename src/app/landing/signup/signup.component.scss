@@ -1,0 +1,23 @@
+// shared css for the login and signup page
+@import "../login/login.component.scss";
+.signup-page{
+    margin-top: 140px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 0 4em #3e3a3a;
+    background-color: rgba(255,255,255,1);
+    padding: 15px;
+    margin-bottom: 80px;
+    border-radius: 5px;
+}
+.second-txt{
+    font-size:12px;
+    padding-bottom: 5px;
+    color: #aaa;
+    text-align: center;
+    border-bottom: 1px solid #aaaaaa61;
+}
+.disabled-button{
+    background: #838383!important;
+    color: #fff!important;
+    border-color: #838383!important;
+}
