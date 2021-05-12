@@ -28,7 +28,7 @@
         "@ngx-translate/http-loader": "^3.0.1",
         "@swimlane/ngx-charts": "^9.0.0",
         "angular-particle": "^1.0.4",
-        "chart.js": "^2.7.2",
+        "chart.js": "^2.9.4",
         "core-js": "^2.5.5",
         "font-awesome": "^4.7.0",
         "ng2-charts": "^1.6.0",
